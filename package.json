@@ -1,0 +1,22 @@
+{
+  "name": "gulp-langcsv2json",
+  "version": "1.0.0",
+  "description": "A gulp plugin to generate lang.json files from a formatted csv file",
+  "main": "index.js",
+  "dependencies": {
+    "pac-csv-array": "^1.0.0",
+    "gulp-util": "^3.0.0",
+    "mkdirp": "^0.5.1",
+    "through2": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pearce & Co.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaylaitsines/gulp-langcsv2json.git"
+  },
+  "license": "ISC"
+}
