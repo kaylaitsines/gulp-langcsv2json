@@ -13,7 +13,7 @@ var PLUGIN_NAME = 'gulp-langcsv2json';
 
 // Exports
 module.exports = function (options) {
-  options.filePath    = options.filePath || '';
+  options.filePath    = options.filePath + "&_timestamp=" + (new Date()).getTime() || '';
   options.dest        = options.dest || '';
   options.columnKey   = options.columnKey || '';
   options.columnValue = options.columnValue || [];
