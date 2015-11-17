@@ -62,6 +62,7 @@ module.exports = function (options) {
 
         var lang = {};
         var langString = {};
+        var langYml = {};
 
         for (var i in data) {
           for (var j in options.columnValue) {
@@ -71,10 +72,12 @@ module.exports = function (options) {
             if (typeof lang[language] == 'undefined') {
               lang[language] = {};
               langString[language] = '';
+              langYml[language] = language + ':\n';
             };
 
             lang[language][key] = escape_quot(value);
             langString[language] += '"' + key + '" = "' + escape_quot(value, true) + '";\n';
+            langYml[language] += '  ' + key + ': "' + escape_quot(value, true) + '"\n';
 
             if (options.debug === 2) {
               console.log('=> ' + language, key, value);
@@ -84,6 +87,7 @@ module.exports = function (options) {
 
         var outputJson = options.output.indexOf('json') != -1;
         var outputStrings = options.output.indexOf('strings') != -1;
+        var outputYml = options.output.indexOf('yml') != -1;
 
         for (var language in lang) {
           if (options.debug === 3) {
@@ -107,6 +111,14 @@ module.exports = function (options) {
                   console.info(logTime() + ' Translation generated! > \'' + logText('./' + options.dest + language + '.lproj/Localizable.strings', 'cyan') + '\'');
                   cb_saved();
                 });
+              });
+            };
+
+            if (outputYml) {
+              fs.writeFile(options.dest + language + '.yml', langYml[language], function(err) {
+                if (err) return console.log(err);
+                console.info(logTime() + ' Translation generated! > \'' + logText('./' + options.dest + language + '.yml', 'cyan') + '\'');
+                cb_saved();
               });
             };
           })(language);
