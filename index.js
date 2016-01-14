@@ -18,6 +18,7 @@ module.exports = function (options) {
   options.columnKey   = options.columnKey || '';
   options.columnValue = options.columnValue || [];
   options.output      = options.output || ['json'];
+  options.delValue    = options.delValue || ['**NO_TRANSLATIONS**'];
   options.callback    = options.callback || function() {};
   options.debug       = options.debug || false;
 
@@ -69,6 +70,12 @@ module.exports = function (options) {
             var language = options.columnValue[j];
             var key      = data[i][options.columnKey]
             var value    = data[i][language] == '' ? data[i]['en'] : data[i][language];
+
+            // filter delValue
+            if (options.delValue.indexOf(value) > -1) {
+              value = '';
+            };
+
             if (typeof lang[language] == 'undefined') {
               lang[language] = {};
               langString[language] = '';
