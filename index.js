@@ -64,6 +64,7 @@ module.exports = function (options) {
         var lang = {};
         var langString = {};
         var langYml = {};
+        var langLiquid = {};
 
         for (var i in data) {
           for (var j in options.columnValue) {
@@ -80,11 +81,13 @@ module.exports = function (options) {
               lang[language] = {};
               langString[language] = '';
               langYml[language] = language + ':\n';
+              langLiquid[language] = '';
             };
 
             lang[language][key] = escape_quot(value);
             langString[language] += '"' + key + '" = "' + escape_quot(value, true) + '";\n';
             langYml[language] += '  ' + key + ': "' + escape_quot(value, true) + '"\n';
+            langLiquid[language] += '{% assign ' + key + ' = "' + escape_quot(value, true) + '" %}\n';
 
             if (options.debug === 2) {
               console.log('=> ' + language, key, value);
@@ -95,6 +98,7 @@ module.exports = function (options) {
         var outputJson = options.output.indexOf('json') != -1;
         var outputStrings = options.output.indexOf('strings') != -1;
         var outputYml = options.output.indexOf('yml') != -1;
+        var outputLiquid = options.output.indexOf('liquid') != -1;
 
         for (var language in lang) {
           if (options.debug === 3) {
@@ -125,6 +129,14 @@ module.exports = function (options) {
               fs.writeFile(options.dest + language + '.yml', langYml[language], function(err) {
                 if (err) return console.log(err);
                 console.info(logTime() + ' Translation generated! > \'' + logText('./' + options.dest + language + '.yml', 'cyan') + '\'');
+                cb_saved();
+              });
+            };
+
+            if (outputLiquid) {
+              fs.writeFile(options.dest + language + '.liquid', langLiquid[language], function(err) {
+                if (err) return console.log(err);
+                console.info(logTime() + ' Translation generated! > \'' + logText('./' + options.dest + language + '.liquid', 'cyan') + '\'');
                 cb_saved();
               });
             };
