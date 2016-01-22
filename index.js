@@ -21,6 +21,7 @@ module.exports = function (options) {
   options.delValue    = options.delValue || ['**NO_TRANSLATIONS**'];
   options.callback    = options.callback || function() {};
   options.debug       = options.debug || false;
+  options.outputName  = options.outputName || '';
 
   return through.obj(function (file, enc, cb) {
 
@@ -107,36 +108,38 @@ module.exports = function (options) {
           };
 
           (function(language) {
+            var partFilePath = options.dest + options.outputName + language;
+
             if (outputJson) {
-              fs.writeFile(options.dest + language + '.json', JSON.stringify(lang[language], null, 2), function(err) {
+              fs.writeFile(partFilePath + '.json', JSON.stringify(lang[language], null, 2), function(err) {
                 if (err) return console.log(err);
-                console.info(logTime() + ' Translation generated! > \'' + logText('./' + options.dest + language + '.json', 'cyan') + '\'');
+                console.info(logTime() + ' Translation generated! > \'' + logText('./' + partFilePath + '.json', 'cyan') + '\'');
                 cb_saved();
               });
             };
 
             if (outputStrings) {
-              mkdirp(options.dest + language + '.lproj', function(err) {
-                fs.writeFile(options.dest + language + '.lproj/Localizable.strings', langString[language], function(err) {
+              mkdirp(partFilePath + '.lproj', function(err) {
+                fs.writeFile(partFilePath + '.lproj/Localizable.strings', langString[language], function(err) {
                   if (err) return console.log(err);
-                  console.info(logTime() + ' Translation generated! > \'' + logText('./' + options.dest + language + '.lproj/Localizable.strings', 'cyan') + '\'');
+                  console.info(logTime() + ' Translation generated! > \'' + logText('./' + partFilePath + '.lproj/Localizable.strings', 'cyan') + '\'');
                   cb_saved();
                 });
               });
             };
 
             if (outputYml) {
-              fs.writeFile(options.dest + language + '.yml', langYml[language], function(err) {
+              fs.writeFile(partFilePath + '.yml', langYml[language], function(err) {
                 if (err) return console.log(err);
-                console.info(logTime() + ' Translation generated! > \'' + logText('./' + options.dest + language + '.yml', 'cyan') + '\'');
+                console.info(logTime() + ' Translation generated! > \'' + logText('./' + partFilePath + '.yml', 'cyan') + '\'');
                 cb_saved();
               });
             };
 
             if (outputLiquid) {
-              fs.writeFile(options.dest + language + '.liquid', langLiquid[language], function(err) {
+              fs.writeFile(partFilePath + '.liquid', langLiquid[language], function(err) {
                 if (err) return console.log(err);
-                console.info(logTime() + ' Translation generated! > \'' + logText('./' + options.dest + language + '.liquid', 'cyan') + '\'');
+                console.info(logTime() + ' Translation generated! > \'' + logText('./' + partFilePath + '.liquid', 'cyan') + '\'');
                 cb_saved();
               });
             };
