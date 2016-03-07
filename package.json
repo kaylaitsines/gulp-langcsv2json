@@ -1,6 +1,6 @@
 {
   "name": "gulp-langcsv2json",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A gulp plugin to generate lang.json files from a formatted csv file",
   "main": "index.js",
   "dependencies": {

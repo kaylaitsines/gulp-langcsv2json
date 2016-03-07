@@ -90,7 +90,7 @@ module.exports = function (options) {
             lang[language][key] = escape_quot(value);
             langString[language] += '"' + key + '" = "' + escape_quot(value, true) + '";\n';
             langYml[language] += '  ' + key + ': "' + escape_quot(value, true) + '"\n';
-            langXml[language] += '    <string name="' + key + '">' + value + '</string>\n';
+            langXml[language] += '    <string name="' + key + '">' + escape_special(value) + '</string>\n';
             langLiquid[language] += '{% assign ' + key + ' = "' + escape_quot(value, true) + '" %}\n';
 
             if (i == data.length - 1) {
@@ -190,6 +190,11 @@ module.exports = function (options) {
       } else {
         return str.replace(/&quot;/g, '\"');
       };
+    }
+
+    // TODO escape objects
+    function escape_special(str, strIn, strOut) {
+      return str.replace(/&quot;/g, '**SPECIAL_QUOT**').replace(/&/g, '&amp;').replace(/\*\*SPECIAL_QUOT\*\*/g, '&quot;');
     }
 
     var styles = {
